@@ -17,7 +17,7 @@ public class Particle {
 
     private int index;
 
-    private final static int size = 6;
+    private final static int structSize = 6;
 
     private static final int rxOffset = 0;
     private static final int ryOffset = 1;
@@ -29,8 +29,8 @@ public class Particle {
     public Particle() {
     }
 
-    public static int getSize() {
-        return size;
+    public static int getStructSize() {
+        return structSize;
     }
 
     public Particle(double[] y, double[] masses, boolean[] ignoreFlags, int index) {
@@ -64,40 +64,40 @@ public class Particle {
     }
 
     public void setRDerivativeTo(double[] yDot) {
-        yDot[index * size + rxOffset] = getVX();
-        yDot[index * size + ryOffset] = getVY();
-        yDot[index * size + rzOffset] = getVZ();
+        yDot[index * structSize + rxOffset] = getVX();
+        yDot[index * structSize + ryOffset] = getVY();
+        yDot[index * structSize + rzOffset] = getVZ();
     }
 
     public void setVDerivativeTo(double[] yDot, double ax, double ay, double az) {
-        yDot[index * size + vxOffset] = ax;
-        yDot[index * size + vyOffset] = ay;
-        yDot[index * size + vxOffset] = az;
+        
+        yDot[index * structSize + vxOffset] = ax;
+        yDot[index * structSize + vyOffset] = ay;
+        yDot[index * structSize + vzOffset] = az;
     }
 
     public double getRX() {
-        System.out.println("get-value: " + index + " = " + y[index * size + rxOffset]);
-        return y[index * size + rxOffset];
+        return y[index * structSize + rxOffset];
     }
 
     public double getRY() {
-        return y[index * size + ryOffset];
+        return y[index * structSize + ryOffset];
     }
 
     public double getRZ() {
-        return y[index * size + rzOffset];
+        return y[index * structSize + rzOffset];
     }
 
     public double getVX() {
-        return y[index * size + vxOffset];
+        return y[index * structSize + vxOffset];
     }
 
     public double getVY() {
-        return y[index * size + vyOffset];
+        return y[index * structSize + vyOffset];
     }
 
     public double getVZ() {
-        return y[index * size + vzOffset];
+        return y[index * structSize + vzOffset];
     }
 
     public double getMass() {
@@ -105,28 +105,27 @@ public class Particle {
     }
 
     public void setRX(double rx) {
-        y[index * size + rxOffset] = rx;
+        y[index * structSize + rxOffset] = rx;
     }
 
     public void setRY(double ry) {
-        System.out.println("set-value: " + ry);
-        y[index * size + ryOffset] = ry;
+        y[index * structSize + ryOffset] = ry;
     }
 
     public void setRZ(double rz) {
-        y[index * size + rzOffset] = rz;
+        y[index * structSize + rzOffset] = rz;
     }
 
     public void setVX(double vx) {
-        y[index * size + vxOffset] = vx;
+        y[index * structSize + vxOffset] = vx;
     }
 
     public void setVY(double vy) {
-        y[index * size + vyOffset] = vy;
+        y[index * structSize + vyOffset] = vy;
     }
 
     public void setVZ(double vz) {
-        y[index * size + vzOffset] = vz;
+        y[index * structSize + vzOffset] = vz;
     }
 
     public void setMass(double mass) {
