@@ -64,21 +64,36 @@ public class Main /*extends Application*/ {
         final int numBodies = 2;
 
         double[] m = new double[numBodies];
-        m[0] = 5.98e24;
-        m[1] = 7.35e22;
+//        m[0] = 5.98e24;
+//        m[1] = 7.35e22;
 
-        double y[] = new double[numBodies * 4];
+        double y[] = new double[numBodies * Particle.getSize()];
 
-        y[0] = 0;
-        y[1] = 0;
-        y[2] = 0;
-        y[3] = 0;
+        boolean[] ignoreFlag = new boolean[numBodies];
 
-        y[4] = 3.84e8;
-        y[5] = 0;
-        y[6] = 0;
-        y[7] = 1023.2;
+        final Particle earth = new Particle(y, m, ignoreFlag, 0);
+        earth.setMass(5.98e24);
+        earth.setR(0, 0, 0);
+        earth.setV(0, 0, 0);
 
+        final Particle moon = new Particle(y, m, ignoreFlag, 1);
+        moon.setMass(7.35e22);
+        moon.setR(3.84e8, 0, 0);
+        moon.setV(0, 1023.2, 0);
+
+//        for(int i =0; i < numBodies; i++) {
+//            Particle p = new Particle(y, m, ignoreFlag, i);
+//            
+//        }
+//        y[0] = 0;
+//        y[1] = 0;
+//        y[2] = 0;
+//        y[3] = 0;
+//
+//        y[4] = 3.84e8;
+//        y[5] = 0;
+//        y[6] = 0;
+//        y[7] = 1023.2;
 //        for (int i = 0; i < y.length; i += 4) {
 ////            System.out.println("i: " + i);
 //
@@ -109,7 +124,9 @@ public class Main /*extends Application*/ {
             public void init(double t0, double[] y0, double t) {
 
                 try {
-                    w.append(t0 / tn + " " + y0[0] + " " + y0[0 + 1] + " " + y0[4] + " " + y0[4 + 1]);
+                    earth.setY(y0);
+                    moon.setY(y0);
+                    w.append(t0 / tn + " " + earth.getRX() + " " + +earth.getRY() + " " + moon.getRX() + " " + +moon.getRY());
                     w.newLine();
                 } catch (IOException ex) {
                     Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
@@ -133,8 +150,12 @@ public class Main /*extends Application*/ {
                 double[] y = interpolator.getInterpolatedState();
 
                 try {
-                    w.append(t / tn + " " + y[0] + " " + y[0 + 1] + " " + y[4] + " " + y[4 + 1]);
+                    System.out.println(" -->");
+                    earth.setY(y);
+                    moon.setY(y);
+                    w.append(t / tn + " " + earth.getRX() + " " + +earth.getRY() + " " + moon.getRX() + " " + +moon.getRY());
                     w.newLine();
+                    System.out.println(" <--");
                 } catch (IOException ex) {
                     Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -153,13 +174,13 @@ public class Main /*extends Application*/ {
 
             @Override
             public int getDimension() {
-                return numBodies * 4;
+                return numBodies * Particle.getSize();
             }
 
             @Override
             public void computeDerivatives(double t, double[] y, double[] yDot) throws MaxCountExceededException, DimensionMismatchException {
 
-                    // d2 rI / dt^2 = GmJ*(rJ-rI)/|rJ-rI|^3
+                // d2 rI / dt^2 = GmJ*(rJ-rI)/|rJ-rI|^3
                 // http://www.physics.buffalo.edu/phy410-505/topic5/
                 // http://physics.princeton.edu/~fpretori/Nbody/intro.htm
                 // outer sum
@@ -211,36 +232,32 @@ public class Main /*extends Application*/ {
 ////                    yDot[i + offset] = y[i + offset];
 ////                    yDot[i + offset + 1] = y[i + offset + 1];
 //                }
-                
-                double diffX = y[0] - y[4];
-                double diffY = y[1] - y[4 + 1];
+                earth.setY(y);
+                moon.setY(y);
 
-                double magnitudeSquare = diffX * diffX + diffY * diffY;
+                double diffX = earth.getRX() - moon.getRX();
+                double diffY = earth.getRY() - moon.getRY();
+                double diffZ = earth.getRZ() - moon.getRZ();
 
-                double aX = diffX * (G * m[0] * m[1]) / (magnitudeSquare * Math.sqrt(magnitudeSquare));
-                double aY = diffY * (G * m[0] * m[1]) / (magnitudeSquare * Math.sqrt(magnitudeSquare));
+                double magnitudeSquare = diffX * diffX + diffY * diffY + diffZ * diffZ;
 
-                // write earth v, i.e. r'
-                yDot[0] = y[2];
-                yDot[0 + 1] = y[2 + 1];
-
-                // write moon v, i.e., r'
-                yDot[4] = y[4 + 2];
-                yDot[4 + 1] = y[4 + 2 + 1];
+                double aX = diffX * (G * earth.getMass() * moon.getMass()) / (magnitudeSquare * Math.sqrt(magnitudeSquare));
+                double aY = diffY * (G * earth.getMass() * moon.getMass()) / (magnitudeSquare * Math.sqrt(magnitudeSquare));
+                double aZ = diffZ * (G * earth.getMass() * moon.getMass()) / (magnitudeSquare * Math.sqrt(magnitudeSquare));
 
                 double aEX = aX / (-m[0]);
                 double aEY = aY / (-m[0]);
+                double aEZ = aZ / (-m[0]);
 
                 double aMX = aX / (m[1]);
                 double aMY = aY / (m[1]);
+                double aMZ = aZ / (m[1]);
 
-                // write earth a, i.e. v'
-               yDot[2] = aEX;
-                yDot[2 + 1] = aEY;
+                earth.setRDerivativeTo(yDot);
+                earth.setVDerivativeTo(yDot, aEX, aEY, aEZ);
 
-                // write moon a, i.e. v'
-                yDot[6] = aMX;
-                yDot[6 + 1] = aMY;
+                moon.setRDerivativeTo(yDot);
+                moon.setVDerivativeTo(yDot, aMX, aMY, aMZ);
 
             }
         }, t0, y, tn, y
