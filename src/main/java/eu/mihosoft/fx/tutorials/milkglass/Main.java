@@ -57,11 +57,11 @@ public class Main /*extends Application*/ {
         double relTol = 1e-10;
 
         double t0 = 0;
-        double tn = 60 * 60 * 24 * 365;
+        double tn = 60 * 60 * 24 * 365 * 10;
 
         double G = 6.672e-11;
 
-        final int numBodies = 2;
+        final int numBodies = 3;
 
         final double[] m = new double[numBodies];
 //        m[0] = 5.98e24;
@@ -81,46 +81,14 @@ public class Main /*extends Application*/ {
         moon.setR(3.84e8, 0, 0);
         moon.setV(0, 1023.2, 0);
 
-//        final Particle sun = new Particle(y, m, ignoreFlag, 2);
-//        sun.setMass(5.98e24);
-//        sun.setR(3.84e8+3000, 0, 0);
-//        sun.setV(0, 1023.2/2, 0);
-//        for(int i =0; i < numBodies; i++) {
-//            Particle p = new Particle(y, m, ignoreFlag, i);
-//            
-//        }
-//        y[0] = 0;
-//        y[1] = 0;
-//        y[2] = 0;
-//        y[3] = 0;
-//
-//        y[4] = 3.84e8;
-//        y[5] = 0;
-//        y[6] = 0;
-//        y[7] = 1023.2;
-//        for (int i = 0; i < y.length; i += 4) {
-////            System.out.println("i: " + i);
-//
-//            if (i >= 4) {
-//                // r
-//                y[i] = 4;
-//                y[i + 1] = 5;
-//            } else {
-//                y[i] = 0;
-//                y[i + 1] = 1;
-//            }
-//
-//            if (i >= 4) {
-//                // v
-//                y[i + 2] = 0;
-//                y[i + 3] = 1023.2;
-//            }
-////            // a
-////            y[i + 4] = 0;
-////            y[i + 5] = 0;
-//        }
-//        FirstOrderIntegrator integrator = new DormandPrince853Integrator(minStep, maxStep, absTol, relTol);
-        FirstOrderIntegrator integrator = new ClassicalRungeKuttaIntegrator(6e3);
+        final Particle moon2 = new Particle(y, m, ignoreFlag, 2);
+        moon2.setMass(7.35e22);
+        moon2.setR(3.84e8 * 2, 0, 0);
+        moon2.setV(0, 1023.2/1.2 , 0);
+//        moon2.setIgnored(false);
+
+        FirstOrderIntegrator integrator = new DormandPrince853Integrator(minStep, maxStep, absTol, relTol);
+//        FirstOrderIntegrator integrator = new ClassicalRungeKuttaIntegrator(6e3);
         BufferedWriter w = new BufferedWriter(new FileWriter(new File("result.txt")));
 
         StepHandler stepHandler = new StepHandler() {
@@ -130,22 +98,12 @@ public class Main /*extends Application*/ {
                 try {
                     earth.setY(y0);
                     moon.setY(y0);
-                    w.append(t0 / tn + " " + earth.getRX() + " " + +earth.getRY() + " " + moon.getRX() + " " + +moon.getRY());// + " " + sun.getRX() + " " + sun.getRY());
+                    moon2.setY(y0);
+                    w.append(t0 / tn + " " + earth.getRX() + " " + +earth.getRY() + " " + moon.getRX() + " " + +moon.getRY() + " " + moon2.getRX() + " " + +moon2.getRY());
                     w.newLine();
                 } catch (IOException ex) {
                     Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
                 }
-
-//                for (int i = 0; i < y.length; i += 6) {
-//                    if (i % 6 == 0) {
-//                        
-//                        try {
-//                            w.append(t0 + " " + y0[i] + " " + y0[i+1]);
-//                        } catch (IOException ex) {
-//                            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
-//                        }
-//                    }
-//                }
             }
 
             @Override
@@ -156,7 +114,8 @@ public class Main /*extends Application*/ {
                 try {
                     earth.setY(y);
                     moon.setY(y);
-                    w.append(t / tn + " " + earth.getRX() + " " + +earth.getRY() + " " + moon.getRX() + " " + moon.getRY());// + " " + sun.getRX() + " " + sun.getRY());
+                    moon2.setY(y);
+                    w.append(t / tn + " " + earth.getRX() + " " + +earth.getRY() + " " + moon.getRX() + " " + moon.getRY() + " " + moon2.getRX() + " " + +moon2.getRY());
                     w.newLine();
 
                 } catch (IOException ex) {
@@ -194,6 +153,10 @@ public class Main /*extends Application*/ {
 
                     pI.setIndex(i);
 
+                    if (pI.isIgnored()) {
+                        continue;
+                    }
+
                     // inner sum
                     for (int j = 0; j < numBodies; j++) {
 
@@ -202,6 +165,10 @@ public class Main /*extends Application*/ {
                         }
 
                         pJ.setIndex(j);
+
+                        if (pJ.isIgnored()) {
+                            continue;
+                        }
 
                         double rJMinusRIX = pJ.getRX() - pI.getRX();
                         double rJMinusRIY = pJ.getRY() - pI.getRY();
