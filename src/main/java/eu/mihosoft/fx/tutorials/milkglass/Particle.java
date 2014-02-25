@@ -64,80 +64,80 @@ public class Particle {
     }
 
     public void setRDerivativeTo(double[] yDot) {
-        yDot[getIndex() * structSize + rxOffset] = getVX();
-        yDot[getIndex() * structSize + ryOffset] = getVY();
-        yDot[getIndex() * structSize + rzOffset] = getVZ();
+        yDot[index * structSize + rxOffset] = getVX();
+        yDot[index * structSize + ryOffset] = getVY();
+        yDot[index * structSize + rzOffset] = getVZ();
     }
 
     public void setVDerivativeTo(double[] yDot, double ax, double ay, double az) {
         
-        yDot[getIndex() * structSize + vxOffset] = ax;
-        yDot[getIndex() * structSize + vyOffset] = ay;
-        yDot[getIndex() * structSize + vzOffset] = az;
+        yDot[index * structSize + vxOffset] = ax;
+        yDot[index * structSize + vyOffset] = ay;
+        yDot[index * structSize + vzOffset] = az;
     }
 
     public double getRX() {
-        return y[getIndex() * structSize + rxOffset];
+        return y[index * structSize + rxOffset];
     }
 
     public double getRY() {
-        return y[getIndex() * structSize + ryOffset];
+        return y[index * structSize + ryOffset];
     }
 
     public double getRZ() {
-        return y[getIndex() * structSize + rzOffset];
+        return y[index * structSize + rzOffset];
     }
 
     public double getVX() {
-        return y[getIndex() * structSize + vxOffset];
+        return y[index * structSize + vxOffset];
     }
 
     public double getVY() {
-        return y[getIndex() * structSize + vyOffset];
+        return y[index * structSize + vyOffset];
     }
 
     public double getVZ() {
-        return y[getIndex() * structSize + vzOffset];
+        return y[index * structSize + vzOffset];
     }
 
     public double getMass() {
-        return masses[getIndex()];
+        return masses[index];
     }
 
     public void setRX(double rx) {
-        y[getIndex() * structSize + rxOffset] = rx;
+        y[index * structSize + rxOffset] = rx;
     }
 
     public void setRY(double ry) {
-        y[getIndex() * structSize + ryOffset] = ry;
+        y[index * structSize + ryOffset] = ry;
     }
 
     public void setRZ(double rz) {
-        y[getIndex() * structSize + rzOffset] = rz;
+        y[index * structSize + rzOffset] = rz;
     }
 
     public void setVX(double vx) {
-        y[getIndex() * structSize + vxOffset] = vx;
+        y[index * structSize + vxOffset] = vx;
     }
 
     public void setVY(double vy) {
-        y[getIndex() * structSize + vyOffset] = vy;
+        y[index * structSize + vyOffset] = vy;
     }
 
     public void setVZ(double vz) {
-        y[getIndex() * structSize + vzOffset] = vz;
+        y[index * structSize + vzOffset] = vz;
     }
 
     public void setMass(double mass) {
-        masses[getIndex()] = mass;
+        masses[index] = mass;
     }
 
     public boolean isIgnored() {
-        return ignoreFlags[getIndex()];
+        return ignoreFlags[index];
     }
 
     public void setIgnored(boolean state) {
-        ignoreFlags[getIndex()] = state;
+        ignoreFlags[index] = state;
     }
 
     /**
