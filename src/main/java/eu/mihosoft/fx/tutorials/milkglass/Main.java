@@ -26,6 +26,7 @@ import org.apache.commons.math3.ode.FirstOrderDifferentialEquations;
 import org.apache.commons.math3.ode.FirstOrderIntegrator;
 import org.apache.commons.math3.ode.nonstiff.ClassicalRungeKuttaIntegrator;
 import org.apache.commons.math3.ode.nonstiff.DormandPrince853Integrator;
+import org.apache.commons.math3.ode.nonstiff.EulerIntegrator;
 import org.apache.commons.math3.ode.sampling.StepHandler;
 import org.apache.commons.math3.ode.sampling.StepInterpolator;
 
@@ -281,16 +282,51 @@ public class Main extends Application {
                                 + rJMinusRIZ * rJMinusRIZ;
 
                         double magnitudeRJMinusRI = Math.sqrt(magnitudeRJMinusRISquare);
-
-                        if (magnitudeRJMinusRI < 1e8) {
-                            pJ.setIgnored(true);
-                            pI.setMass(pI.getMass() + pJ.getMass());
-                            pane.getChildren().remove(nodes[j]);
-//                            nodes[i].setRadius(pI.getMass()*0.5e-22);
-
-                            nodes[i].setRadius(Math.min(pI.getMass() * 2e-22, 50));
+                        
+                        boolean isSun = i == 0 || j == 0;
+                        
+                        double iRadius = Math.sqrt(pI.getMass());
+                        double jRadius = Math.sqrt(pJ.getMass());
+                        
+                        if (i == 0) {
+                            iRadius = 45;
+                        }
+                        
+                        if (j == 0) {
+                            jRadius = 45;
                         }
 
+                        if (magnitudeRJMinusRI < Math.max(iRadius + jRadius, 5)) {
+
+                            Particle pCollision;
+                            Particle other;
+
+                            if (pI.getMass() > pJ.getMass()) {
+                                pCollision = pI;
+                                other = pJ;
+                                other.setIgnored(true);
+                                pane.getChildren().remove(nodes[j]);
+                            } else {
+                                pCollision = pJ;
+                                other = pI;
+                                other.setIgnored(true);
+                                pane.getChildren().remove(nodes[i]);
+                            }
+
+                            pCollision.setMass(pI.getMass() + pJ.getMass());
+
+//                            nodes[i].setRadius(pI.getMass()*0.5e-22);
+                            double vProp = other.getMass() / pCollision.getMass();
+
+                            pI.setV(pCollision.getVX() + other.getVX() * vProp, pCollision.getVY() + other.getVY() * vProp, pCollision.getVZ() + other.getVZ() * vProp);
+
+                            if (pCollision.getIndex() == 0) {
+                                nodes[pCollision.getIndex()].setRadius(Math.min(pCollision.getMass(), 45));
+                            } else {
+//                                nodes[i].setRadius(Math.min(pI.getMass(), 20));
+                                nodes[pCollision.getIndex()].setRadius(Math.sqrt(pCollision.getMass()));
+                            }
+                        }
                         aIX += pI.getMass() * pJ.getMass() * rJMinusRIX
                                 / (magnitudeRJMinusRISquare * magnitudeRJMinusRI);
                         aIY += pI.getMass() * pJ.getMass() * rJMinusRIY
@@ -333,7 +369,7 @@ public class Main extends Application {
         setupODE(pane);
 
         // final stage setup
-        primaryStage.setTitle("Milk Glass Demo");
+        primaryStage.setTitle("Gravity Demo");
         primaryStage.setScene(scene);
         primaryStage.show();
     }
@@ -346,13 +382,12 @@ public class Main extends Application {
         double[] m = new double[numBodies];
         boolean[] ignoreFlags = new boolean[numBodies];
 
-        double G = 6.672e-11;
+        double G = 0.01;//6.672e-11;
 
         Particle sun = new Particle(y, m, ignoreFlags, 0);
-        sun.setMass(2.5e25);
-        sun.setR(3.84e8 * 5 * 3, 3.84e8 * 5 * 1.5, 0);
+        sun.setMass(30000000);
+        sun.setR(1024 / 2, 768 / 2, 0);
         sun.setV(0, 0, 0);
-
         initialX = sun.getRX();
         initialY = sun.getRY();
 
@@ -365,7 +400,7 @@ public class Main extends Application {
 //        moon.setMass(7.35e22);
 //        moon.setR(3.84e8, 0, 0);
 //        moon.setV(0, 1023.2, 0);
-//
+////
 //        final Particle moon2 = new Particle(y, m, ignoreFlags, 2);
 //        moon2.setMass(7.35e22);
 //        moon2.setR(3.84e8 * 2, 0, 0);
@@ -386,28 +421,34 @@ public class Main extends Application {
 //        pane.getChildren().add(nodes[2]);
         for (int i = 1; i < numBodies; i++) {
             Particle p = new Particle(y, m, ignoreFlags, i);
-            p.setMass(1e22 + 8.35e22 * Math.random());
-            p.setR(3.84e8 * Math.random() * 5 * 10 - 3.84e8 * 10 * 5/4.5, 3.84e8 * Math.random() * 5 * 10- 3.84e8 * 10 * 5/4.5, 0);
-            p.setV(1023.2 * Math.random() * 0.7 - 1023.2 / 2, 1023.2 * Math.random() * 0.7 - 1023.2 / 2, 0);
+            p.setMass(Math.random() * 1.25);
+            p.setR(Math.random() * 400, Math.random() * 300, 0);
+            
+            double v = 25;
+            
+            p.setV(-v + Math.random() * v*2, -v + Math.random() * v, 0);
+//            p.setV(1023.2 * Math.random() * 0.7 - 1023.2 / 2, 1023.2 * Math.random() * 0.7 - 1023.2 / 2, 0);
 
 //            if (i > numBodies/10) {
-            p.setMass(1e22 + 7.35e22 * Math.random() * 0.1);
+//            p.setMass(1e22 + 7.35e22 * Math.random() * 0.1);
 //            }
         }
-
         for (int i = 0; i < nodes.length; i++) {
             Particle p = new Particle(y, m, ignoreFlags, i);
             nodes[i] = new Circle(0);
             nodes[i].setFill(colors[(int) (colors.length * Math.random())]);
+//            nodes[i].setRadius(Math.min(p.getMass(), 20));
+            nodes[i].setRadius(Math.sqrt(p.getMass()));
             if (i == 0) {
                 nodes[i].setFill(Color.YELLOW);
                 nodes[i].setEffect(new BoxBlur(10, 10, 3));
+                nodes[i].setRadius(Math.min(p.getMass(), 45));
             }
-            nodes[i].setRadius(Math.min(p.getMass() * 2e-22, 50));
 
             pane.getChildren().add(nodes[i]);
         }
 
+//        updateView(nodes, y, m, ignoreFlags);
 //        for (int i = 0; i < nodes.length; i++) {
 //            nodes[i] = new Circle(0);
 //            nodes[i].setFill(colors[(int)(colors.length*Math.random())]);
@@ -415,12 +456,14 @@ public class Main extends Application {
 //            
 //            pane.getChildren().add(nodes[i]);
 //        }
-        initFrameListener(createODE(numBodies, y, m, ignoreFlags, G), y, m, ignoreFlags, 0.001);
+        initFrameListener(createODE(numBodies, y, m, ignoreFlags, G), y, m, ignoreFlags, 0.05);
     }
 
     public void initFrameListener(FirstOrderDifferentialEquations ode, double[] y, final double[] m, final boolean[] ignoreFlags, double dt) {
 
-        FirstOrderIntegrator integrator = new ClassicalRungeKuttaIntegrator(9e3);
+        final double timeScale = 50;
+
+        FirstOrderIntegrator integrator = new ClassicalRungeKuttaIntegrator(dt);
 
         double[] yPrev = new double[y.length];
         double[] interpolatedY = new double[y.length];
@@ -436,7 +479,6 @@ public class Main extends Application {
                 double frameDuration = (now - lastTimeStamp) / 1e9;
                 lastTimeStamp = now;
 
-//                System.out.println("frameDuration: " + frameDuration + ", t: " + t);
                 // we don't allow frame durations above 2*dt
                 if (frameDuration > 2 * dt) {
                     frameDuration = 2 * dt;
@@ -450,12 +492,12 @@ public class Main extends Application {
 
                 // simulate remaining interval
                 while (remainingSimulationTime >= dt) {
-
-                    double tPlusDt = time + dt;
+                    
+                    double scaledT = time*timeScale;
 
                     // integrate
                     try {
-                        integrator.integrate(ode, time * 60 * 60 * 24 * 20 * 10, y, tPlusDt * 60 * 60 * 24 * 20 * 10, y);
+                        integrator.integrate(ode, scaledT, y, scaledT+dt, y);
 
                     } catch (Exception ex) {
                         ex.printStackTrace(System.err);
@@ -464,7 +506,7 @@ public class Main extends Application {
                     remainingSimulationTime -= dt;
 
                     // update t
-                    time = tPlusDt;
+                    time = time+dt;
                 }
 
                 // interpolate state
@@ -494,66 +536,9 @@ public class Main extends Application {
         for (int i = 0; i < nodes.length; i++) {
             p.setIndex(i);
 
-            nodes[i].setLayoutX((p.getRX() - xCenterOffset) * 0.06e-6+300);
-            nodes[i].setLayoutY((p.getRY() - yCenterOffset) * 0.06e-6+300);
+            nodes[i].setLayoutX((p.getRX() - xCenterOffset));
+            nodes[i].setLayoutY((p.getRY() - yCenterOffset));
         }
     }
 
-    /**
-     * Spawns a node (circle).
-     *
-     * @param scene scene
-     * @param container circle container
-     */
-    private void spawnNode(Scene scene, Pane container) {
-
-        // create a circle node
-        Circle node = new Circle(0);
-
-        // circle shall be ignored by parent layout
-        node.setManaged(false);
-
-        // randomly pick one of the colors
-        node.setFill(colors[(int) (Math.random() * colors.length)]);
-
-        // choose a random position
-        node.setCenterX(Math.random() * scene.getWidth());
-        node.setCenterY(Math.random() * scene.getHeight());
-
-        // add the container to the circle container
-        container.getChildren().add(node);
-
-        // create a timeline that fades the circle in and and out and also moves
-        // it across the screen
-        Timeline timeline = new Timeline(
-                new KeyFrame(
-                        Duration.ZERO,
-                        new KeyValue(node.radiusProperty(), 0),
-                        new KeyValue(node.centerXProperty(), node.getCenterX()),
-                        new KeyValue(node.centerYProperty(), node.getCenterY()),
-                        new KeyValue(node.opacityProperty(), 0)),
-                new KeyFrame(
-                        Duration.seconds(5 + Math.random() * 5),
-                        new KeyValue(node.opacityProperty(), Math.random()),
-                        new KeyValue(node.radiusProperty(), Math.random() * 20)),
-                new KeyFrame(
-                        Duration.seconds(10 + Math.random() * 20),
-                        new KeyValue(node.radiusProperty(), 0),
-                        new KeyValue(node.centerXProperty(), Math.random() * scene.getWidth()),
-                        new KeyValue(node.centerYProperty(), Math.random() * scene.getHeight()),
-                        new KeyValue(node.opacityProperty(), 0))
-        );
-
-        // timeline shall be executed once
-        timeline.setCycleCount(1);
-
-        // when we are done we spawn another node
-        timeline.setOnFinished(evt -> {
-            container.getChildren().remove(node);
-            spawnNode(scene, container);
-        });
-
-        // finally, we play the timeline
-        timeline.play();
-    }
 }
