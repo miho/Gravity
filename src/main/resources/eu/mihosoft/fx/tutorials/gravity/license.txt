@@ -1,0 +1,94 @@
+----------------------------------------------
+NASA
+http://www.nasa.gov/multimedia/guidelines/index.html
+----------------------------------------------
+Media Usage Guidelines
+ 
+Still Images, Audio Recordings, Video, and Related Computer Files
+
+NASA still images, audio files, video, and computer files used in the rendition of 3-dimensional models, such as texture maps and polygon data in any format, generally are not copyrighted. You may use this material for educational or informational purposes, including photo collections, textbooks, public exhibits, computer graphical simulations and Internet Web pages. This general permission extends to personal Web pages.
+
+This general permission does not extend to use of the NASA insignia logo (the blue "meatball" insignia), the retired NASA logotype (the red "worm" logo) and the NASA seal. These images may not be used by persons who are not NASA employees or on products (including Web pages) that are not NASA-sponsored.
+
+NASA should be acknowledged as the source of the material except in cases of advertising. See NASA Advertising Guidelines.
+
+If the NASA material is to be used for commercial purposes, especially including advertisements, it must not explicitly or implicitly convey NASA's endorsement of commercial goods or services. If a NASA image includes an identifiable person, using the image for commercial purposes may infringe that person's right of privacy or publicity, and permission should be obtained from the person. Current NASA employees, including astronauts, may not appear in commercial material. Any questions regarding application of any NASA image or emblem should be directed to Bert Ulrich of the Multimedia Division of NASA's Office of Communications at NASA Headquarters in Washington.
+
+NASA occasionally uses copyrighted material by permission on its website. Those images will be marked copyright with the name of the copyright holder. NASA's use does not convey any rights to others to use the same material. Those wishing to use copyrighted material must contact the copyright holder directly.
+
+Questions about particular photos should be directed to:
+
+
+Photo Department
+NASA Headquarters
+300 E St. SW
+Washington, DC 20546
+Tel: 202-358-1900
+Fax: 202-358-4333
+
+Linking to NASA Web Sites
+
+NASA Web sites are not copyrighted, and may be linked to from other Web sites, including individuals' personal Web sites, without explicit permission from NASA. However, such links may not explicitly or implicitly convey NASA's endorsement of commercial goods or services.
+
+NASA images may be used as graphic "hot links" to NASA Web sites, provided they are used within the guidelines above. This permission does not extend to use of the NASA insignia, the retired NASA logotype or the NASA seal.
+
+NASA should be acknowledged as the source of the material except in cases of advertising. See NASA Advertising Guidelines.
+
+Restrictions 
+
+As a government entity, NASA does not license the use of NASA materials or sign licensing agreements. The agency generally has no objection to the reproduction and use of these materials (audio transmissions and recordings; video transmissions and recording; or still and motion picture photography), subject to the following conditions:
+
+NASA material may not be used to state or imply the endorsement by NASA or by any NASA employee of a commercial product, service, or activity, or used in any manner that might mislead. Please see NASA Advertising Guidelines and Merchandising Guidelines for more information.
+
+It is unlawful to falsely claim copyright or other rights in NASA material.
+
+NASA shall in no way be liable for any costs, expenses, claims, or demands arising out of the use of NASA material by a recipient or a recipient's distributees.
+
+NASA does not indemnify nor hold harmless users of NASA material, nor release such users from copyright infringement, nor grant exclusive use rights with respect to NASA material.
+
+NASA material is not protected by copyright unless noted. If copyrighted, permission should be obtained from the copyright owner prior to use. If not copyrighted, NASA material may be reproduced and distributed without further permission from NASA.
+
+If a recognizable person, or talent (e.g., an astronaut or a noted personality engaged to narrate a film) appears in NASA material, use for commercial purposes may infringe a right of privacy or publicity. Therefore, permission should be obtained from the recognizable person or talent. If the proposed use of the NASA material could be viewed as a commercial exploitation of that person. However, if the intended use of NASA material is primarily for communicative purposes, i.e., books, newspapers, and magazines reporting facts of historical significance (constitutionally protected media uses), then such uses will generally be considered not to infringe such personal rights.
+
+Some NASA audiovisual material may incorporate music or footage, which is copyrighted and licensed for the particular NASA work. Any editing or otherwise altering of the work may not be covered under the original license, and therefore would require permission of the copyright owner.
+
+NASA audiovisual material may include visible NASA identifiers (e.g., the name of the vehicle and the NASA Insignia or Logotype in photographs or film footage of ground vehicles, aircraft or spacecraft). Use of such materials is generally non-objectionable, provided the NASA identifiers appear in their factual context.
+
+----------------------------------------------
+planetpixelemporium
+http://planetpixelemporium.com/planets.html
+----------------------------------------------
+
+I work in the field of advertising. One day I needed an image map of our planet for use in a rendering for a printed piece, and was suprised to discover that such a thing was pretty hard to find. So I created my own using scanned data, lots of painting, and reference to USGS digital elevation map data. Once I had completed both a bump and color map of the Earth, I turned to the other planets in our solar system, scavenging data where I could and piecing together the images I am sharing here.
+
+Above, you'll find links to pages where you can obtain high-quality texture maps of the planets for the purpose of 3D rendering. You'll find notes on the creation or source of each map, and a small sample rendering of the map to show you how it will look in your artwork. Interspersed amongst the pages you will find the occasional rendering tip.
+
+These maps are simple cylindrical projections, designed to be applied to spheres using spherical projection. If you use any other projection method, the map will appear distorted on the final product.
+
+A note about prices:
+Some of the larger maps and the 3D objects require PayPal payment. This has been done to help defray the costs associated with hosting this site. I've tried to keep the prices reasonable and fair.
+
+A note about nomenclature:
+Some of the maps here are available in more than one size. I have chosen to label these 1K, 2K, 4K, etc. The number refers to the horizontal resolution of the image. A 4K image is 4000 pixels wide. The vertical resolution is always half of the horizontal. On each page is a thumbnail image of the map used on a sphere in Cinema4D. If you click on the thumbnail image, a larger, more detailed version will open in a new window.
+
+Copyright Information
+All textures and images on this site are Copyright (c) by James Hastings-Trew. The maps are free to download and use as source material or resource in artwork or rendering (CGI or real time) in any kind of project - personal, commercial, broadcast, or display. You are not free to redistribute the maps "as is" in any medium - online, CD, for sale, etc. where the primary intent is to distribute the maps themselves and not the result of using the maps, without my permission. That is to say, the results of using the maps are free to use and distribute, but the maps as direct source material for those results may not be, unless you have my permission. The maps may not be included as they exist on this site in any kind of commercial, shareware, or freeware product without my permission. The maps may not be repackaged with 3D models and sold in any form. The maps may not be given away in whole or in part on another website or in a freeware or commercial product without my permission.
+
+Here are some examples of usage that I hope will clear the situation up:
+
+Example 1 - The Simulator or Game
+You are a software author who has created a Solar System simulator and you want to use my planet texture maps in your program. Since the primary intent of your use is to create real time renderings utilizing the planet texture maps as a resource in your software product, this is an acceptable use under my copyright terms.
+
+Example 2 - The Fantasy Poster
+You are an artist who is producting a poster for sale on the internet and you wish to use one of my planet texture maps as source material in your artwork. Since the primary intent of your use is to create artwork using the planet texture maps as a resource in your artwork, this is an acceptable use under my copyright terms.
+
+Example 3 - The Japanese Space Museum
+You are the curator of a Japanese Space Museum and you wish to use my planet texture maps in an animated display showing the motions of the solar system. Since the primary intent of your use is to create artwork (the animation) using the planet texture maps as resources, this is an acceptable use under my copyright terms.
+
+Example 4 - The 3D Rendering Program
+You are a software author and you wish to include the planet texture maps from my site with your product as part of the content set you are offering with your program (commercial, shareware, or freeware). Since you want to distribute the maps, and not the results of using the maps, you will need my permission to do so.
+
+Example 5 - The Quick Buck Artist
+You are looking to make some money off of my work, and you decide to package up some sphere models made in 3D Studio Max with my maps wrapped around them, and sell them on a website for a significant amount of money. Since you want to distribute the maps, and not the results of using the maps, you will need my persmission to do so. Except I will not give you permission to directly sell what I am giving away for free here — that would be unethical and a blot on your karma. Shame on you. Go tell your mom what you have done. She'll know what to do with you.
+
+I hope this clears up some questions about copyright usage. 
