@@ -1,4 +1,4 @@
-MilkGlass
+Gravity
 =========
 
 JavaFX Milk Glass Demo
